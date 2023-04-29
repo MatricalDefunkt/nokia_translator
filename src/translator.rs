@@ -75,6 +75,7 @@ impl Translator {
                 _ => panic!("Cannot translate char: {}", c),
             });
         }
+        self.translated_text = self.translated_text.trim().to_string();
     }
 
     fn translate_num(&mut self) {
@@ -123,5 +124,25 @@ impl Translator {
                 _ => panic!("Cannot translate char: {}", chars),
             }
         }
+        self.translated_text = self.translated_text.trim().to_string();
     }
+}
+
+#[test]
+fn test_translate_text() {
+    let mut translator = Translator::new("hello world".to_string());
+    translator.set_mode(TranslatorMode::Text);
+    translator.translate();
+    assert_eq!(
+        "44 33 555 555 666 0 9 666 777 555 3".to_string(),
+        translator.translated_text
+    );
+}
+
+#[test]
+fn test_translate_num() {
+    let mut translator = Translator::new("44 33 555 555 666 0 9 666 777 555 3".to_string());
+    translator.set_mode(TranslatorMode::Num);
+    translator.translate();
+    assert_eq!("hello world".to_string(), translator.translated_text);
 }
